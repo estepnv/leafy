@@ -6,6 +6,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+/.idea/*
+.rbenv-gemsets
 
 # rspec failure tracking
 .rspec_status

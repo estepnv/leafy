@@ -2,20 +2,16 @@
 
 module Leafy
   class Field
-    attr_accessor :id, :name, :type, :placeholder, :default, :required, :readonly, :hidden, :order
+    attr_accessor :id, :name, :type, :metadata
 
     def initialize(attributes = {})
-      attributes = attributes.dup.to_a.map { |pair| [pair[0].to_sym, pair[1]]}.to_h
+      raise ArgumentError, "attributes is not a Hash" unless attributes.is_a?(Hash)
+      attributes = Leafy::Utils.symbolize_keys(attributes)
 
       self.name = attributes.fetch(:name)
       self.type = attributes.fetch(:type).to_sym
       self.id = attributes.fetch(:id) { "#{name.downcase.strip.tr(" ", "_")}_#{Time.now.to_i + rand(1_000_000)}" }
-      self.placeholder = attributes[:placeholder]
-      self.default = attributes[:default]
-      self.required = attributes.fetch(:required) { false }
-      self.readonly = attributes.fetch(:readonly) { false }
-      self.hidden = attributes.fetch(:hidden) { false }
-      self.order = attributes.fetch(:order) { 0 }
+      self.metadata = attributes.fetch(:metadata, {})
     end
 
     def serializable_hash
@@ -23,12 +19,7 @@ module Leafy
         name: name,
         type: type,
         id: id,
-        placeholder: placeholder,
-        default: default,
-        required: required,
-        readonly: readonly,
-        hidden: hidden,
-        order: order
+        metadata: metadata
       }
     end
   end

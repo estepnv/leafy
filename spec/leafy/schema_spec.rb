@@ -3,12 +3,12 @@
 require "spec_helper"
 
 RSpec.describe Leafy::Schema do
-  let(:instance) { described_class.new }
-  
-  subject { instance }
-  
-  it { is_expected.to respond_to :each }
-  it { is_expected.to respond_to :[] }
+  let(:instance) {described_class.new}
+
+  subject {instance}
+
+  it {is_expected.to respond_to :each}
+  it {is_expected.to respond_to :[]}
 
   it 'implemnts enumerable' do
     is_expected.to respond_to :each
@@ -18,9 +18,9 @@ RSpec.describe Leafy::Schema do
   end
 
   describe "#push" do
-    let(:field) { Leafy::Field.new(name: "Field 1", type: :dummy) }
+    let(:field) {Leafy::Field.new(name: "Field 1", type: :dummy)}
 
-    subject { instance << field }
+    subject {instance << field}
 
     it 'adds field' do
       subject
@@ -29,17 +29,17 @@ RSpec.describe Leafy::Schema do
   end
 
   describe "#[]" do
-    let(:field) { Leafy::Field.new(name: "Field 1", type: :dummy, id: "id") }
+    let(:field) {Leafy::Field.new(name: "Field 1", type: :dummy, id: "id")}
 
-    subject { instance << field; instance["id"] }
+    subject {instance << field; instance["id"]}
 
-    it { is_expected.to eq field }
+    it {is_expected.to eq field}
   end
 
   describe '#serializable_hash' do
-    let(:field_1) { Leafy::Field.new(name: "Field 1", type: :integer, id: "id_1", default: 1, placeholder: "enter an integer", required: true) }
-    let(:field_2) { Leafy::Field.new(name: "Field 2", type: :string, id: "id_2", default: "", placeholder: "enter value") }
-    let(:field_3) { Leafy::Field.new(name: "Field 3", type: :datetime, id: "id_3", order: 10000) }
+    let(:field_1) {Leafy::Field.new(name: "Field 1", type: :integer, id: "id_1", metadata: {default: 1, placeholder: "enter an integer", required: true})}
+    let(:field_2) {Leafy::Field.new(name: "Field 2", type: :string, id: "id_2", metadata: {default: "", placeholder: "enter value"})}
+    let(:field_3) {Leafy::Field.new(name: "Field 3", type: :datetime, id: "id_3", metadata: {order: 10000})}
 
     subject do
       instance << field_1
@@ -49,44 +49,43 @@ RSpec.describe Leafy::Schema do
     end
 
     it 'converts schema to list of hashes' do
-      is_expected.to eq(
-        [
-          {:default=>1,
-            :hidden=>false,
-            :id=>"id_1",
-            :name=>"Field 1",
-            :order=>0,
-            :placeholder=>"enter an integer",
-            :readonly=>false,
-            :required=>true,
-            :type=>:integer},
-           {:default=>"",
-            :hidden=>false,
-            :id=>"id_2",
-            :name=>"Field 2",
-            :order=>0,
-            :placeholder=>"enter value",
-            :readonly=>false,
-            :required=>false,
-            :type=>:string},
-           {:default=>nil,
-            :hidden=>false,
-            :id=>"id_3",
-            :name=>"Field 3",
-            :order=>10000,
-            :placeholder=>nil,
-            :readonly=>false,
-            :required=>false,
-            :type=>:datetime}
-          ]
-      )
+      is_expected.to eq([
+                          {
+                            :id => "id_1",
+                            :name => "Field 1",
+                            :type => :integer,
+                            metadata: {
+                              :default => 1,
+                              :placeholder => "enter an integer",
+                              :required => true
+                            }
+                          },
+                          {
+                            :id => "id_2",
+                            :name => "Field 2",
+                            :type => :string,
+                            metadata: {
+                              :default => "",
+                              :placeholder => "enter value"
+                            }
+                          },
+                          {
+                            :id => "id_3",
+                            :name => "Field 3",
+                            :type => :datetime,
+                            metadata: {
+                              :order => 10000
+                            }
+                          }
+        ]
+        )
     end
   end
 
   describe ".dump" do
-    let(:field_1) { Leafy::Field.new(name: "Field 1", type: :integer, id: "id_1", default: 1, placeholder: "enter an integer", required: true) }
-    let(:field_2) { Leafy::Field.new(name: "Field 2", type: :string, id: "id_2", default: "", placeholder: "enter value") }
-    let(:field_3) { Leafy::Field.new(name: "Field 3", type: :datetime, id: "id_3", order: 10000) }
+    let(:field_1) {Leafy::Field.new(name: "Field 1", type: "integer", id: "id_1", metadata: {default: 1, placeholder: "enter an integer", required: true})}
+    let(:field_2) {Leafy::Field.new(name: "Field 2", type: "string", id: "id_2", metadata: {default: "", placeholder: "enter value"})}
+    let(:field_3) {Leafy::Field.new(name: "Field 3", type: "datetime", id: "id_3", metadata: {order: 10000})}
 
     subject do
       instance << field_1
@@ -96,7 +95,27 @@ RSpec.describe Leafy::Schema do
     end
 
     it 'serializes schema to JSON' do
-      expect(subject).to eq "[{\"name\":\"Field 1\",\"type\":\"integer\",\"id\":\"id_1\",\"placeholder\":\"enter an integer\",\"default\":1,\"required\":true,\"readonly\":false,\"hidden\":false,\"order\":0},{\"name\":\"Field 2\",\"type\":\"string\",\"id\":\"id_2\",\"placeholder\":\"enter value\",\"default\":\"\",\"required\":false,\"readonly\":false,\"hidden\":false,\"order\":0},{\"name\":\"Field 3\",\"type\":\"datetime\",\"id\":\"id_3\",\"placeholder\":null,\"default\":null,\"required\":false,\"readonly\":false,\"hidden\":false,\"order\":10000}]"
+      expected_result = JSON.parse(subject).map {|item| Leafy::Utils.symbolize_keys(item)}
+      expect(expected_result).to eq(
+                                   [
+                                     {
+                                       :id => "id_1",
+                                       :metadata => {:default => 1, :placeholder => "enter an integer", :required => true},
+                                       :name => "Field 1",
+                                       :type => "integer"},
+                                     {
+                                       :id => "id_2",
+                                       :metadata => {:default => "", :placeholder => "enter value"},
+                                       :name => "Field 2",
+                                       :type => "string"},
+                                     {
+                                       :id => "id_3",
+                                       :metadata => {:order => 10000},
+                                       :name => "Field 3",
+                                       :type => "datetime"
+                                     }
+                                   ]
+                                 )
     end
   end
 end

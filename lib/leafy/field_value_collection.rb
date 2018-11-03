@@ -6,9 +6,9 @@ module Leafy
 
     def each
       if block_given?
-        @Leafy_field_values.each { |i| yield i }
+        @leafy_field_values.each { |i| yield i }
       else
-        @Leafy_field_values.each
+        @leafy_field_values.each
       end
     end
 
@@ -22,13 +22,12 @@ module Leafy
 
     def initialize(leafy_fields, values = {})
       @leafy_fields = leafy_fields
-      @Leafy_field_values = leafy_fields.map do |custom_field|
+      @leafy_field_values = leafy_fields.map do |custom_field|
         Leafy::FieldValue.new(
           id: custom_field.id,
           name: custom_field.name,
           raw: values[custom_field.id],
-          type: custom_field.type,
-          default: custom_field.default
+          type: custom_field.type
         )
       end
     end
@@ -39,11 +38,11 @@ module Leafy
         acc
       end
     end
-    
+
     def values=(attributes = {})
       attributes = attributes.dup.to_a.map { |pair| [pair[0].to_s, pair[1]]}.to_h
 
-      @Leafy_field_values.each do |field_value|
+      @leafy_field_values.each do |field_value|
         field_value.value = attributes[field_value.id]
       end
     end

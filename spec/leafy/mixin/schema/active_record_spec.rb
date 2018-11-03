@@ -1,13 +1,14 @@
 require "spec_helper"
+require "active_record";
 
-class SchemaHost
-  include Leafy::Mixin::Schema[:poro]
+class ActiveRecordSchemaHost < ::ActiveRecord::Base
+  include Leafy::Mixin::Schema[:active_record]
 
   attr_accessor :leafy_data
 end
 
-RSpec.describe SchemaHost do
-  subject { described_class.new }
+RSpec.describe Leafy::Mixin::Schema::ActiveRecord do
+  subject { ActiveRecordSchemaHost.new }
 
   it { is_expected.to respond_to :leafy_fields }
   it { is_expected.to respond_to :leafy_fields_attributes= }

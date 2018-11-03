@@ -9,6 +9,9 @@ module Leafy
         when :poro
           include Poro::InstanceMethods
           extend Poro::ClassMethods
+        when :active_record
+          include ActiveRecord::InstanceMethods
+          extend ActiveRecord::ClassMethods
         else
           raise(RuntimeError, "Leafy: unsupported schema storage: #{orm}")
         end
