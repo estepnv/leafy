@@ -1,15 +1,32 @@
 require "spec_helper"
-require "active_record";
-
-class ActiveRecordSchemaHost < ::ActiveRecord::Base
-  include Leafy::Mixin::Schema[:active_record]
-
-  attr_accessor :leafy_data
-end
+require "active_record"
 
 RSpec.describe Leafy::Mixin::Schema::ActiveRecord do
-  subject { ActiveRecordSchemaHost.new }
 
+  let(:schema_host_class) do
+    Class.new(::ActiveRecord::Base) do
+      include Leafy::Mixin::Schema[:active_record]
+      self.table_name = :schema_hosts
+      self.leafy_data_attribute = :leafy_data
+
+      attr_accessor :leafy_data
+    end
+  end
+
+  before do
+    ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
+    ActiveRecord::Base.connection.create_table(:schema_hosts) do |t|
+      t.text :leafy_data
+      t.timestamps
+    end
+    ActiveRecord::Base.raise_in_transactional_callbacks = true unless ActiveRecord.version >= Gem::Version.new("5.0.0")
+  end
+
+  after { ActiveRecord::Base.remove_connection }
+
+  subject { schema_host_class.new }
+
+  it { is_expected.to respond_to :leafy_data }
   it { is_expected.to respond_to :leafy_fields }
   it { is_expected.to respond_to :leafy_fields_attributes= }
 
@@ -18,9 +35,11 @@ RSpec.describe Leafy::Mixin::Schema::ActiveRecord do
       { type: :integer, name: "My Number", id: "id_1" },
       { type: :string, name: "My String", id: "id_2" }
     ]
-    expect(subject.leafy_data).to eq "[{\"name\":\"My Number\",\"type\":\"integer\",\"id\":\"id_1\",\"placeholder\":null,\"default\":null,\"required\":false,\"readonly\":false,\"hidden\":false,\"order\":0},{\"name\":\"My String\",\"type\":\"string\",\"id\":\"id_2\",\"placeholder\":null,\"default\":null,\"required\":false,\"readonly\":false,\"hidden\":false,\"order\":0}]"
+    expect(subject.leafy_data).to eq "[{\"name\":\"My Number\",\"type\":\"integer\",\"id\":\"id_1\",\"metadata\":{}},{\"name\":\"My String\",\"type\":\"string\",\"id\":\"id_2\",\"metadata\":{}}]"
 
-    custom_fields_arr = subject.leafy_fields.to_a
+    subject.save!
+
+    custom_fields_arr = subject.reload.leafy_fields.to_a
 
     expect(subject.leafy_fields).to be_a Leafy::Schema
 

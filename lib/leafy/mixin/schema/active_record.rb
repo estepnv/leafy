@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "active_record"
+
 module Leafy
   module Mixin
     module Schema
@@ -7,17 +9,31 @@ module Leafy
       module ActiveRecord
         module InstanceMethods
           def leafy_fields
-            raise(RuntimeError, "must respond to #leafy_data") unless respond_to?(:leafy_data)
-            Leafy::Schema.load(leafy_data.nil? ? "[]" : leafy_data)
+            data = _leafy_data
+
+            activerecord_json_column? ?
+              Leafy::Schema.new(data) :
+              Leafy::Schema.load(data.nil? ? "[]" : data)
+
           end
 
           def leafy_fields=(leafy_schema)
-            self.leafy_data = Leafy::Schema.dump(leafy_schema)
+            self._leafy_data = activerecord_json_column? ?
+                                 leafy_schema.serializable_hash :
+                                 Leafy::Schema.dump(leafy_schema)
           end
 
           def leafy_fields_attributes=(attributes_list)
-            raise(RuntimeError, "must respond to #leafy_data=") unless respond_to?(:leafy_data=)
             self.leafy_fields = Leafy::Schema.new(attributes_list)
+          end
+
+          private
+
+          def activerecord_json_column?
+            return false unless self.is_a?(::ActiveRecord::Base)
+            return false unless column = self.class.columns_hash[self.class.leafy_data_attribute.to_s]
+
+            [:json, :jsonb].include?(column.type)
           end
         end
 

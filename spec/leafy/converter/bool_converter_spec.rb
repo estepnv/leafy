@@ -47,7 +47,7 @@ RSpec.describe Leafy::Converter::BoolConverter do
       subject = instance.load(0)
       expect(subject).to eq false
       subject = instance.load(nil)
-      expect(subject).to eq false
+      expect(subject).to eq nil
     end
   end
 

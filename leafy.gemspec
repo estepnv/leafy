@@ -32,8 +32,19 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "activerecord", ">3"
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+
+  if RUBY_VERSION >= "2.2.2"
+    spec.add_development_dependency "activerecord", "~> 5.0"
+  else
+    spec.add_development_dependency "activerecord", "~> 4.2"
+  end
+
+  if RUBY_ENGINE == "jruby"
+    spec.add_development_dependency "activerecord-jdbcsqlite3-adapter", "51"
+  else
+    spec.add_development_dependency "sqlite3"
+  end
 end

@@ -5,13 +5,18 @@ module Leafy
     module Fields
 
       def self.[](orm = :poro)
+        self.extend DataAccessor::ClassMethods
+        self.include DataAccessor::InstanceMethods
+
         case orm
         when :poro
-          include Poro::InstanceMethods
-          extend Poro::ClassMethods
+          self.extend Poro::ClassMethods
+          self.include Poro::InstanceMethods
         else
           raise(RuntimeError, "Leafy: unsupported fields storage: #{orm}")
         end
+
+        self
       end
 
     end
