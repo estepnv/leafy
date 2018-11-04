@@ -1,22 +1,46 @@
 # frozen_string_literal: true
 
+require_relative "./data_accessor"
+
 module Leafy
   module Mixin
     module Fields
 
       def self.[](orm = :poro)
-        self.extend DataAccessor::ClassMethods
-        self.include DataAccessor::InstanceMethods
+        Module.new do
+          @orm = orm
 
-        case orm
-        when :poro
-          self.extend Poro::ClassMethods
-          self.include Poro::InstanceMethods
-        else
-          raise(RuntimeError, "Leafy: unsupported fields storage: #{orm}")
+          def self.included(base)
+
+            base.extend DataAccessor::ClassMethods
+            base.include DataAccessor::InstanceMethods
+
+            case @orm
+
+            when :poro
+
+              require_relative "./poro/fields"
+
+              base.extend Poro::Fields::ClassMethods
+              base.include Poro::Fields::InstanceMethods
+
+            when :active_record
+
+              require_relative "./active_record/shared"
+              require_relative "./active_record/fields"
+
+              base.extend ActiveRecord::Fields::ClassMethods
+              base.include ActiveRecord::Shared::InstanceMethods
+              base.include ActiveRecord::Fields::InstanceMethods
+
+            else
+
+              raise(RuntimeError, "Leafy: unsupported schema storage: #{orm}")
+
+            end
+          end
+
         end
-
-        self
       end
 
     end

@@ -1,7 +1,7 @@
 require "spec_helper"
 require "active_record"
 
-RSpec.describe Leafy::Mixin::Schema::ActiveRecord do
+RSpec.describe "ActiveRecord mixin" do
 
   let(:schema_host_class) do
     Class.new(::ActiveRecord::Base) do
@@ -45,12 +45,12 @@ RSpec.describe Leafy::Mixin::Schema::ActiveRecord do
 
     integer_field = custom_fields_arr[0]
     expect(integer_field).to be_a Leafy::Field
-    expect(integer_field.type).to eq :integer
+    expect(integer_field.type).to eq "integer"
     expect(integer_field.name).to eq "My Number"
 
     string_field = custom_fields_arr[1]
     expect(string_field).to be_a Leafy::Field
-    expect(string_field.type).to eq :string
+    expect(string_field.type).to eq "string"
     expect(string_field.name).to eq "My String"
   end
 end

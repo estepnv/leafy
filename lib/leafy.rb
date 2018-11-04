@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
-Dir[File.expand_path("../leafy/**/*.rb", __FILE__)].each { |f| require f }
+require "leafy/version"
+require "leafy/utils"
+require "leafy/field"
+require "leafy/schema"
+require "leafy/field_value"
+require "leafy/field_value_collection"
+Dir[File.expand_path("../leafy/converter/**/*.rb", __FILE__)].each { |f| require f }
+require "leafy/mixin/schema"
+require "leafy/mixin/fields"
+
 
 # module definition
 module Leafy

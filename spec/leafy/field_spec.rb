@@ -24,15 +24,4 @@ RSpec.describe Leafy::Field do
     instance = described_class.new('type' => :dummy, 'name' => "My Field", 'placeholder' => "1234", 'default' => "456")
     expect(instance).to be_a Leafy::Field
   end
-
-  it 'has unique id' do
-    threads = []
-    instances = []
-    30.times do
-      threads << Thread.new { instances << described_class.new(type: :dummy, name: "field") }
-    end
-    threads.each(&:join)
-
-    expect(instances.map(&:id).uniq.size).to eq instances.size
-  end
 end

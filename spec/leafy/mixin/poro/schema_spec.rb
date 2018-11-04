@@ -6,7 +6,7 @@ class PoroSchemaHost
   attr_accessor :leafy_data
 end
 
-RSpec.describe Leafy::Mixin::Schema::Poro do
+RSpec.describe Leafy::Mixin::Poro::Schema do
   subject { PoroSchemaHost.new }
 
   it { is_expected.to respond_to :leafy_fields }
@@ -25,12 +25,12 @@ RSpec.describe Leafy::Mixin::Schema::Poro do
 
     integer_field = custom_fields_arr[0]
     expect(integer_field).to be_a Leafy::Field
-    expect(integer_field.type).to eq :integer
+    expect(integer_field.type).to eq "integer"
     expect(integer_field.name).to eq "My Number"
 
     string_field = custom_fields_arr[1]
     expect(string_field).to be_a Leafy::Field
-    expect(string_field.type).to eq :string
+    expect(string_field.type).to eq "string"
     expect(string_field.name).to eq "My String"
   end
 end

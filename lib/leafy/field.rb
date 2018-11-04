@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'securerandom'
 
 module Leafy
   class Field
@@ -8,9 +9,9 @@ module Leafy
       raise ArgumentError, "attributes is not a Hash" unless attributes.is_a?(Hash)
       attributes = Leafy::Utils.symbolize_keys(attributes)
 
-      self.name = attributes.fetch(:name)
-      self.type = attributes.fetch(:type).to_sym
-      self.id = attributes.fetch(:id) { "#{name.downcase.strip.tr(" ", "_")}_#{Time.now.to_i + rand(1_000_000)}" }
+      self.name = attributes[:name]
+      self.type = attributes[:type]
+      self.id = attributes.fetch(:id) { [name.downcase.strip.tr(" ", "-"), SecureRandom.uuid].join("-") }
       self.metadata = attributes.fetch(:metadata, {})
     end
 

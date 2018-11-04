@@ -2,9 +2,9 @@
 
 module Leafy
   module Mixin
-    module Schema
+    module Poro
 
-      module Poro
+      module Schema
 
         module InstanceMethods
           def leafy_fields
@@ -13,11 +13,11 @@ module Leafy
           end
 
           def leafy_fields=(leafy_schema)
-            self._leafy_data = Leafy::Schema.dump(leafy_schema)
+            self._leafy_data = ::Leafy::Schema.dump(leafy_schema)
           end
 
           def leafy_fields_attributes=(attributes_list)
-            self.leafy_fields = Leafy::Schema.new(attributes_list)
+            self.leafy_fields = ::Leafy::Schema.new(attributes_list)
           end
         end
 

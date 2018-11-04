@@ -10,7 +10,7 @@ module Leafy
       self.id = attributes.fetch(:id)
       self.name = attributes.fetch(:name)
       self.type = attributes.fetch(:type)
-      self.converter = attributes.fetch(:converter) { Leafy.converters.fetch(type) { raise(RuntimeError, "unregistered converter #{field.type}") } }
+      self.converter = attributes.fetch(:converter) { Leafy.converters.fetch(type.to_sym) { raise(RuntimeError, "unregistered converter #{type}") } }
       self.raw = attributes.fetch(:raw)
     end
 
