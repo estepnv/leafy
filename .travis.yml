@@ -18,9 +18,21 @@ matrix:
 
 before_install: gem install bundler
 
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
 script: bundle exec rspec
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 cache: bundler
 
 env:
-  - RACK_ENV=development
+  global:
+    CC_TEST_REPORTER_ID=5c94ea74238649cee4b51abbe647de62a3d63971eaeca9aa58c82b62d9a0e6a8
+    COVERAGE=1
+
+

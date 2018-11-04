@@ -80,7 +80,7 @@ RSpec.describe Leafy::Mixin::ActiveRecord::Fields do
 
   describe '#leafy_values=' do
     it 'sets values hash' do
-      instance.leafy_values = { "id_1": 123, "id_2": "test", "id_3": Time.new(2018,10,10, 10,10,10, "+03:00") }
+      instance.leafy_values = { "id_1": 123, "id_2": "test", "id_3": Time.new(2018,10,10, 10,10,10, "+03:00"), "id_4": "asdfasdf" }
       instance.save!
       instance.reload
 
