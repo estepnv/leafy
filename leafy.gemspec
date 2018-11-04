@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "leafy/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "leafy"
+  spec.name          = "leafy-ruby"
   spec.version       = Leafy.version
   spec.authors       = ["Evgeny Stepanov"]
   spec.email         = ["estepnv@icloud.com"]

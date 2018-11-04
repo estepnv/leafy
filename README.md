@@ -20,7 +20,7 @@ Supported data types:
 Add Leafy to Gemfile
 
 ```ruby
-gem 'leafy'
+gem 'leafy-ruby'
 ```
 
 **Plain Ruby app**
