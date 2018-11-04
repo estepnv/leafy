@@ -70,9 +70,9 @@ host.leafy_fields_attributes = [
 
 # or build schema yourself
 
-field_1 = Leafy::Field.new(name: "Field 1", type: :integer, id: "id_1", default: 1, placeholder: "enter an integer", required: true)
-field_2 = Leafy::Field.new(name: "Field 2", type: :string, id: "id_2", default: "", placeholder: "enter value")
-field_3 = Leafy::Field.new(name: "Field 3", type: :datetime, id: "id_3", order: 10000)
+field_1 = Leafy::Field.new(name: "Field 1", type: :integer, id: "id_1", metadata: { default: 1, placeholder: "enter an integer", required: true })
+field_2 = Leafy::Field.new(name: "Field 2", type: :string, id: "id_2", metadata: { default: "", placeholder: "enter value" })
+field_3 = Leafy::Field.new(name: "Field 3", type: :datetime, id: "id_3", metadata: { order: 10000 })
 
 schema = Leafy::Schema.new
 schema << field_1
