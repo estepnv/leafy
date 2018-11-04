@@ -12,6 +12,7 @@ module Leafy
 
       def load(value)
         return if value.nil?
+
         case value.respond_to?(:downcase) ? value&.downcase : value
         when "1", "true", "t", 1, "yes", "y"
           true
