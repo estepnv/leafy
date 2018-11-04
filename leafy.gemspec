@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "leafy/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "Leafy"
+  spec.name          = "leafy"
   spec.version       = Leafy.version
   spec.authors       = ["Evgeny Stepanov"]
   spec.email         = ["estepnv@icloud.com"]
@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "simplecov"
 
   if RUBY_VERSION >= "2.2.2"
     spec.add_development_dependency "activerecord", "~> 5.0"
