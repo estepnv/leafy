@@ -50,7 +50,7 @@ RSpec.describe FieldsHost do
       expect(field_values["id_2"]).to eq "test"
       expect(field_values["id_3"]).to eq Time.new(2018,10,10, 10,10,10, "+03:00")
 
-      expect(instance.leafy_data).to eq  "{\"id_1\":\"123\",\"id_2\":\"test\",\"id_3\":\"2018-10-10T10:10:10+03:00\"}"
+      expect(instance.leafy_data).to eq  "{\"id_1\":\"123\",\"id_2\":\"test\",\"id_3\":\"2018-10-10T07:10:10Z\"}"
     end
   end
 

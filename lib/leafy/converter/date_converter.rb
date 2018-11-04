@@ -1,26 +1,29 @@
 # frozen_string_literal: true
 
-require "time"
+require "date"
 
 module Leafy
   module Converter
-    class DatetimeConverter
+    class DateConverter
 
       def dump(value)
         return if value.nil?
 
         target = value.dup
         target = load(target) if target.is_a?(String)
+        target = target.dup.to_date if target.is_a?(Time)
 
-        raise(ArgumentError, "is not a Time object") unless target.is_a?(Time)
+        unless target.is_a?(Date)
+          raise(ArgumentError, "is not a Date object")
+        end
 
-        target.utc.iso8601
+        target.iso8601
       end
 
       def load(value)
         return if value.nil?
-        return value if value.is_a?(Time)
-        Time.parse(value).utc
+        return value if value.is_a?(Date)
+        Date.parse(value)
       end
 
     end
