@@ -9,10 +9,22 @@ require "leafy/field_value_collection"
 Dir[File.expand_path("../leafy/converter/**/*.rb", __FILE__)].each { |f| require f }
 require "leafy/mixin/schema"
 require "leafy/mixin/fields"
+require "leafy/coder/default"
+require "leafy/coder/mock"
+require "leafy/configuration"
 
 
 # module definition
 module Leafy
+
+  def self.configure
+    yield configuration if block_given?
+  end
+
+  def self.configuration
+    @config ||= Leafy::Configuration.new
+  end
+
   def self.register_converter(name, converter)
     raise(ArgumentError, "converter is not provided") if converter.nil?
 

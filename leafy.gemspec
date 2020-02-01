@@ -23,25 +23,26 @@ Gem::Specification.new do |spec|
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
-  spec.bindir        = "exe"
+  spec.bindir        = "bin"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
   spec.required_ruby_version = '>= 2.2'
+  spec.platform      = Gem::Platform::RUBY
 
-  spec.add_development_dependency "bundler", "~> 1.16"
-  spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "simplecov"
+  spec.add_development_dependency "simplecov", '~> 0.17.1'
 
-  if RUBY_VERSION >= "2.2.2"
-    spec.add_development_dependency "activerecord", "~> 5.0"
+  if RUBY_VERSION >= "2.5.0"
+    spec.add_development_dependency "activerecord", "~> 6.0"
   else
-    spec.add_development_dependency "activerecord", "~> 4.2"
+    spec.add_development_dependency "activerecord", "~> 5.2"
   end
 
   if RUBY_ENGINE == "jruby"
     spec.add_development_dependency "activerecord-jdbcsqlite3-adapter", "51"
+    spec.add_development_dependency "pg_jruby"
   else
     spec.add_development_dependency "sqlite3"
+    spec.add_development_dependency "pg"
   end
 end

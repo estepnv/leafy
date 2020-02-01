@@ -4,6 +4,23 @@ module Leafy
   class FieldValueCollection
     include ::Enumerable
 
+    def initialize(leafy_fields, field_values: {}, ar_json: false)
+      @leafy_fields = leafy_fields
+      @coder = ar_json ? Leafy::Coder::Mock.new : Leafy.configuration.coder
+      self.leafy_field_values = field_values
+    end
+
+    def leafy_field_values=(data)
+      @leafy_field_values = @leafy_fields.map do |custom_field|
+        Leafy::FieldValue.new(
+          id: custom_field.id,
+          name: custom_field.name,
+          raw: data[custom_field.id],
+          type: custom_field.type
+        )
+      end
+    end
+
     def each
       if block_given?
         @leafy_field_values.each { |i| yield i }
@@ -20,18 +37,6 @@ module Leafy
       count
     end
 
-    def initialize(leafy_fields, values = {})
-      @leafy_fields = leafy_fields
-      @leafy_field_values = leafy_fields.map do |custom_field|
-        Leafy::FieldValue.new(
-          id: custom_field.id,
-          name: custom_field.name,
-          raw: values[custom_field.id],
-          type: custom_field.type
-        )
-      end
-    end
-
     def values
       inject({}) do |acc, field_value|
         acc[field_value.id] = field_value.value
@@ -40,19 +45,23 @@ module Leafy
     end
 
     def values=(attributes = {})
-      attributes = attributes.dup.to_a.map { |pair| [pair[0].to_s, pair[1]]}.to_h
+      _attributes = {}
+
+      attributes.each { |key, value| _attributes[key.to_s] = value }
 
       @leafy_field_values.each do |field_value|
-        field_value.value = attributes[field_value.id]
+        field_value.value = _attributes[field_value.id]
       end
     end
 
-    def self.dump(field_values_collection)
-      JSON.dump(field_values_collection.map { |field_value| [field_value.id, field_value.raw] }.to_h)
+    def dump
+      data = {}
+      each { |field_value| data[field_value.id] = field_value.raw }
+      @coder.dump(data)
     end
 
-    def self.load(leafy_fields, data)
-      Leafy::FieldValueCollection.new(leafy_fields, JSON.load(data))
+    def load(data)
+      self.leafy_field_values = @coder.load(data)
     end
 
   end

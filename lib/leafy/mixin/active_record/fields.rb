@@ -24,11 +24,13 @@ module Leafy
             field_value_list = leafy_field_values
             field_value_list.values = attributes
 
-            self.leafy_data = ::Leafy::FieldValueCollection.dump(field_value_list)
+            self.leafy_data = field_value_list.dump
           end
 
           def leafy_field_values
-            ::Leafy::FieldValueCollection.load(leafy_fields, leafy_data || "{}")
+            field_value_collection = ::Leafy::FieldValueCollection.new(leafy_fields, ar_json: activerecord_json_column?)
+            field_value_collection.load(leafy_data || '{}')
+            field_value_collection
           end
         end
       end
