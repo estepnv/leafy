@@ -2,21 +2,35 @@ sudo: false
 
 language: ruby
 
+services:
+  - postgresql
+
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+
 rvm:
-  - 2.2
   - 2.3
   - 2.4
   - 2.5
+  - 2.6
+  - 2.7
   - ruby-head
-  - jruby-9.2.0.0
   - jruby-head
 
 matrix:
   allow_failures:
+    - rvm: jruby-9.2.0.0
+    - rvm: 2.2
     - rvm: ruby-head
     - rvm: jruby-head
 
-before_install: gem install bundler
+before_install:
+  - yes | gem update --system --force
+  - gem install bundler
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -32,7 +46,9 @@ cache: bundler
 
 env:
   global:
-    CC_TEST_REPORTER_ID=5c94ea74238649cee4b51abbe647de62a3d63971eaeca9aa58c82b62d9a0e6a8
-    COVERAGE=1
+    - CC_TEST_REPORTER_ID=5c94ea74238649cee4b51abbe647de62a3d63971eaeca9aa58c82b62d9a0e6a8
+    - COVERAGE=1
+    - PGPORT=5433
+
 
 

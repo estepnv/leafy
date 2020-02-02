@@ -30,13 +30,13 @@ Include "Plain old ruby object" mixin into your class definition to start using 
 ```ruby
 class SchemaHost < ActiveRecord::Base
   include Leafy::Mixin::Schema[:poro]
-  
+
   attr_accessor :leafy_data
 end
 
 class FieldsHost < ActiveRecord::Base
   include Leafy::Mixin::Fields[:poro]
-  
+
   attr_accessor :leafy_data
   attr_accessor :leafy_fields
 end
@@ -46,7 +46,7 @@ Schema mixin introduces next methods:
 
 - `#leafy_fields (Schema)` returns Schema instance allowing you to iterate through custom attribute definitions.
 - `#leafy_fields=` schema setter method
-- `#leafy_fields_attributes=` nested attributes setter method  
+- `#leafy_fields_attributes=` nested attributes setter method
 
 Fields mixin:
 
@@ -56,7 +56,7 @@ Fields mixin:
 
 **Please note**:
 Leafy is stateless and changing Schema instance won't reflect on your active record model instance.
-For changes to take place you have to explicitly assign schema or attributes data to the model. 
+For changes to take place you have to explicitly assign schema or attributes data to the model.
 
 
 
@@ -102,7 +102,7 @@ Add migration
 add_column :schema_hosts, :leafy_data, :text, null: false, default: "{}"
 add_column :fields_hosts, :leafy_data, :text, null: false, default: "{}"
 # for postgresql
-# add_column :leafy_data, :jsonb, null: false, default: {} 
+# add_column :leafy_data, :jsonb, null: false, default: {}
 ```
 
 Update your models
@@ -114,9 +114,9 @@ end
 
 class FieldsHost < ActiveRecord::Base
   include Leafy::Mixin::Fields[:active_record]
-  
+
   belongs_to :schema_host, required: true
-  delegate :leafy_fields, to: :schema_host 
+  delegate :leafy_fields, to: :schema_host
 end
 ```
 
@@ -143,6 +143,27 @@ target.leafy_values
 # => { "id_1": 123, "id_2": "test", "id_3": Time.new(2018,10,10, 10,10,10, "+03:00") }
 ```
 
+## Configuration
+
+In you initialization code
+
+```ruby
+class MyLovelyCoder
+  def dump(data)
+    "lovely_#{data}"
+  end
+
+  def load(data)
+    data.split("_")[1]
+  end
+end
+
+Leafy.configure do |config|
+  # you may wonna use oj instead
+  config.coder = MyLovelyCoder.new
+end
+```
+
 ## Adding your own types
 
 Leafy allows adding your own data types
@@ -155,8 +176,8 @@ class MyComplexTypeConverter
   def self.load(json_string)
     #  parsing logic
     return MyComplexType.new(parsed_data)
-  end 
-  
+  end
+
   def self.dump(my_complex_type_instance)
     # serializing logic
     return json
@@ -166,7 +187,7 @@ end
 Leafy.register_converter(:complex_type, MyComplexTypeConverter)
 ```
 
- 
+
 
 ## Contributing
 

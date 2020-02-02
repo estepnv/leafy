@@ -9,6 +9,8 @@
 /.idea/*
 /coverage/*
 .rbenv-gemsets
-Gemfile.lock
 # rspec failure tracking
 .rspec_status
+/.history/*
+Gemfile.lock
+.ruby-version

@@ -22,11 +22,13 @@ module Leafy
             field_value_list = leafy_field_values
             field_value_list.values = attributes
 
-            self._leafy_data = ::Leafy::FieldValueCollection.dump(field_value_list)
+            self._leafy_data = field_value_list.dump
           end
 
           def leafy_field_values
-            ::Leafy::FieldValueCollection.load(leafy_fields, _leafy_data || "{}")
+            field_value_collection = ::Leafy::FieldValueCollection.new(leafy_fields)
+            field_value_collection.load(_leafy_data || '{}')
+            field_value_collection
           end
         end
       end
