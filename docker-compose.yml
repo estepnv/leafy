@@ -1,0 +1,23 @@
+version: "2.4"
+
+services:
+  mysql:
+    image: mysql:8.0.20
+    environment:
+      - MYSQL_ROOT_PASSWORD=111
+      - MYSQL_PORT=3306
+      - MYSQL_LOWER_CASE_TABLE_NAMES=0
+    ports:
+      - 3306:3306
+    volumes:
+      - ./.docker/mysql/master/data:/var/lib/mysql:delegated
+  postgresql:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=111
+      - POSTGRES_USER=root
+      - PGDATA=/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.docker/postgres/data:/var/lib/postgresql/data/:delegated

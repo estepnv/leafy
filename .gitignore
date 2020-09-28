@@ -14,3 +14,4 @@
 /.history/*
 Gemfile.lock
 .ruby-version
+.docker

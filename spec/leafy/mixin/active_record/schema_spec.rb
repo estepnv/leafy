@@ -6,10 +6,9 @@ RSpec.describe "ActiveRecord mixin" do
   let(:schema_host_class) do
     Class.new(::ActiveRecord::Base) do
       include Leafy::Mixin::Schema[:active_record]
+
       self.table_name = :schema_hosts
       self.leafy_data_attribute = :leafy_data
-
-      attr_accessor :leafy_data
     end
   end
 
@@ -64,6 +63,15 @@ RSpec.describe "ActiveRecord mixin" do
           { type: :integer, name: "My Number", id: "id_1" },
           { type: :string, name: "My String", id: "id_2" }
         ]
+
+        expect(subject.leafy_data).to eq "[{\"name\":\"My Number\",\"type\":\"integer\",\"id\":\"id_1\",\"metadata\":{}},{\"name\":\"My String\",\"type\":\"string\",\"id\":\"id_2\",\"metadata\":{}}]"
+
+        subject.update!(
+          leafy_fields_attributes: [
+            { type: :integer, name: "My Number", id: "id_1" },
+            { type: :string, name: "My String", id: "id_2" }
+          ]
+        )
         expect(subject.leafy_data).to eq "[{\"name\":\"My Number\",\"type\":\"integer\",\"id\":\"id_1\",\"metadata\":{}},{\"name\":\"My String\",\"type\":\"string\",\"id\":\"id_2\",\"metadata\":{}}]"
       end
     end
@@ -71,7 +79,7 @@ RSpec.describe "ActiveRecord mixin" do
 
   context 'pg json/jsonb' do
     before do
-      pool = ActiveRecord::Base.establish_connection(adapter: 'postgresql', host: '127.0.0.1', port: '5432', user: 'postgres')
+      pool = ActiveRecord::Base.establish_connection(adapter: 'postgresql', host: '127.0.0.1', port: '5432', user: 'root', password: '111')
       pool.with_connection do |conn|
         conn.create_table(:schema_hosts, force: true) do |t|
           t.jsonb :leafy_data
@@ -89,6 +97,14 @@ RSpec.describe "ActiveRecord mixin" do
           { type: :integer, name: "My Number", id: "id_1" },
           { type: :string, name: "My String", id: "id_2" }
         ]
+        expect(subject.leafy_data).to be_a Array
+
+        subject.update!(
+          leafy_fields_attributes: [
+            { type: :integer, name: "My Number", id: "id_1" },
+            { type: :string, name: "My String", id: "id_2" }
+          ]
+        )
         expect(subject.leafy_data).to be_a Array
       end
     end
