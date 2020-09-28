@@ -147,6 +147,10 @@ target.leafy_values
 
 In you initialization code
 
+If you get a `NameError: uninitialized constant` in Rails, please ensure you have required leafy in an initializer.
+
+in `app/config/initializers/leafy.rb` simply add `require 'leafy'`
+
 ```ruby
 class MyLovelyCoder
   def dump(data)
