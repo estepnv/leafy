@@ -1,4 +1,5 @@
 require "spec_helper"
+require 'benchmark' if RUBY_VERSION >= "3.3.0"
 require "leafy/mixin/active_record/schema"
 require "leafy/mixin/active_record/fields"
 require "active_record"
@@ -25,8 +26,8 @@ RSpec.describe Leafy::Mixin::ActiveRecord::Fields do
   end
 
   after do
-    Object.send(:remove_const, 'SchemaHost')
-    Object.send(:remove_const, 'FieldsHost')
+    Object.send(:remove_const, 'SchemaHost') if Object.const_defined?('SchemaHost')
+    Object.send(:remove_const, 'FieldsHost') if Object.const_defined?('FieldsHost')
   end
 
 
