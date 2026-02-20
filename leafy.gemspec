@@ -61,8 +61,11 @@ Gem::Specification.new do |spec|
     # pg version constraint for older Ruby versions
     if RUBY_VERSION >= "2.5.0"
       spec.add_development_dependency "pg", "< 2.0"
-    else
+    elsif RUBY_VERSION >= "2.4.0"
       spec.add_development_dependency "pg", "~> 1.0"
+    else
+      # Ruby 2.2-2.3 need older pg version to avoid segfaults
+      spec.add_development_dependency "pg", "~> 0.21.0"
     end
   end
 end
