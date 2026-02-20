@@ -25,8 +25,8 @@ RSpec.describe Leafy::Mixin::ActiveRecord::Fields do
   end
 
   after do
-    Object.send(:remove_const, 'SchemaHost')
-    Object.send(:remove_const, 'FieldsHost')
+    Object.send(:remove_const, 'SchemaHost') if Object.const_defined?('SchemaHost')
+    Object.send(:remove_const, 'FieldsHost') if Object.const_defined?('FieldsHost')
   end
 
 
@@ -161,7 +161,7 @@ RSpec.describe Leafy::Mixin::ActiveRecord::Fields do
 
   context 'pg json/jsonb' do
     before do
-      pool = ActiveRecord::Base.establish_connection(adapter: 'postgresql', host: '127.0.0.1', port: '5432', user: 'root', password: '111')
+      pool = ActiveRecord::Base.establish_connection(adapter: 'postgresql', host: '127.0.0.1', port: '5432', database: 'postgres', user: 'root', password: '111')
       pool.with_connection do |conn|
 
         conn.create_table(:schema_hosts, force: true) do |t|
