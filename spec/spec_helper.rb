@@ -32,7 +32,10 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each { |f| require f }
 RSpec.configure do |config|
   if !!ENV['COVERAGE']
     require 'simplecov'
-    SimpleCov.start
+    SimpleCov.start do
+      add_filter '/spec/'
+      add_filter '/vendor/'
+    end
   end
 
 

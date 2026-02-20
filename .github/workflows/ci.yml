@@ -77,3 +77,11 @@ jobs:
       
       - name: Run tests
         run: bundle exec rspec
+      
+      - name: Upload coverage to Codecov
+        if: matrix.ruby == '3.3'
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/.resultset.json
+          flags: ruby-${{ matrix.ruby }}
+          fail_ci_if_error: false
