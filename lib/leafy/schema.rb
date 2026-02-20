@@ -39,7 +39,9 @@ module Leafy
     end
 
     def self.load(data)
-      Schema.new(JSON.parse(data))
+      parsed = JSON.parse(data)
+      raise(ArgumentError, "Schema data must be an array") unless parsed.is_a?(Array)
+      Schema.new(parsed)
     end
 
     alias :<< :push

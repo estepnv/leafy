@@ -9,9 +9,9 @@ module Leafy
       def dump(value)
         return if value.nil?
 
-        target = value.dup
+        target = value
         target = load(target) if target.is_a?(String)
-        target = target.dup.to_date if target.is_a?(Time)
+        target = target.to_date if target.is_a?(Time)
 
         unless target.is_a?(Date)
           raise(ArgumentError, "is not a Date object")

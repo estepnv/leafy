@@ -5,7 +5,7 @@ module Leafy
     attr_accessor :id, :name, :type, :raw, :converter
 
     def initialize(attributes)
-      attributes = attributes.dup.to_a.map { |pair| [pair[0].to_sym, pair[1]]}.to_h
+      attributes = attributes.transform_keys(&:to_sym)
 
       self.id = attributes.fetch(:id)
       self.name = attributes.fetch(:name)

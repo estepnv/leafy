@@ -9,7 +9,7 @@ module Leafy
       def dump(value)
         return if value.nil?
 
-        target = value.dup
+        target = value
         target = load(target) if target.is_a?(String)
 
         raise(ArgumentError, "is not a Time object") unless target.is_a?(Time)

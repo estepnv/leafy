@@ -6,7 +6,7 @@ require "leafy/field"
 require "leafy/schema"
 require "leafy/field_value"
 require "leafy/field_value_collection"
-Dir[File.expand_path("../leafy/converter/**/*.rb", __FILE__)].each { |f| require f }
+Dir[File.join(__dir__, "leafy/converter/**/*.rb")].each { |f| require f }
 require "leafy/mixin/schema"
 require "leafy/mixin/fields"
 require "leafy/coder/default"
@@ -16,13 +16,19 @@ require "leafy/configuration"
 
 # module definition
 module Leafy
+  @config_mutex = Mutex.new
+  @converters_mutex = Mutex.new
 
   def self.configure
     yield configuration if block_given?
   end
 
   def self.configuration
-    @config ||= Leafy::Configuration.new
+    return @config if defined?(@config) && @config
+
+    @config_mutex.synchronize do
+      @config ||= Leafy::Configuration.new
+    end
   end
 
   def self.register_converter(name, converter)
@@ -36,7 +42,11 @@ module Leafy
   end
 
   def self.converters
-    @converters ||= {}
+    return @converters if defined?(@converters) && @converters
+
+    @converters_mutex.synchronize do
+      @converters ||= {}
+    end
   end
 end
 

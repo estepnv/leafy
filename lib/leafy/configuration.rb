@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 module Leafy
@@ -11,9 +13,9 @@ module Leafy
     def coder=(value)
       if value.respond_to?(:dump) && value.respond_to?(:load)
         @coder = value
+      else
+        raise ArgumentError, "coder must implement #dump and #load"
       end
-
-      raise ArgumentError, "coder must implement #dump and #load"
     end
   end
 end

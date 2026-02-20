@@ -13,7 +13,15 @@ module Leafy
       def load(value)
         return if value.nil?
 
-        target = value.respond_to?(:downcase) ? (value.downcase rescue nil) : value
+        target = if value.respond_to?(:downcase)
+                   begin
+                     value.downcase
+                   rescue StandardError
+                     nil
+                   end
+                 else
+                   value
+                 end
         return true if ["1", "true", "t", 1, "yes", "y", true].include?(target)
         return false if ["0", "false", "f", 0, "no", "n", false].include?(target)
 

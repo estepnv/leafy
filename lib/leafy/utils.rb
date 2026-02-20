@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Leafy
   module Utils
     def self.symbolize_keys(hash)
