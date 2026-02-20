@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
+# Ruby 3.4+ compatibility: require bundled gems that are needed by dependencies
+if RUBY_VERSION >= "3.4.0"
+  require 'logger'
+  require 'erb'
+  require 'mutex_m'
+  require 'base64'
+  require 'bigdecimal'
+  require 'csv'
+  require 'drb'
+end
+
 require "bundler/setup"
 require "leafy"
 

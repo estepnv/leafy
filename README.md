@@ -1,4 +1,4 @@
-# Leafy [![Build Status](https://travis-ci.org/estepnv/leafy.svg?branch=master)](https://travis-ci.org/estepnv/leafy) [![Maintainability](https://api.codeclimate.com/v1/badges/5108d8a1ac5e2915f30f/maintainability)](https://codeclimate.com/github/estepnv/leafy/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/5108d8a1ac5e2915f30f/test_coverage)](https://codeclimate.com/github/estepnv/leafy/test_coverage)
+# Leafy [![CI](https://github.com/estepnv/leafy/actions/workflows/ci.yml/badge.svg)](https://github.com/estepnv/leafy/actions/workflows/ci.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/5108d8a1ac5e2915f30f/maintainability)](https://codeclimate.com/github/estepnv/leafy/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/5108d8a1ac5e2915f30f/test_coverage)](https://codeclimate.com/github/estepnv/leafy/test_coverage)
 
 A toolkit for dynamic custom attributes for Ruby applications.
 
