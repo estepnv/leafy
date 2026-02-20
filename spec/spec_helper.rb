@@ -9,12 +9,15 @@ end
 if RUBY_VERSION >= "3.0.0"
   require 'mutex_m'
   require 'base64'
+  require 'benchmark'  # Needed by ActiveSupport in Ruby 3.3+/4.x
 end
 
+# Ruby 3.1+ additional bundled gems
 if RUBY_VERSION >= "3.1.0"
   require 'csv'
 end
 
+# Ruby 3.4+ additional bundled gems
 if RUBY_VERSION >= "3.4.0"
   require 'erb'
   require 'bigdecimal'

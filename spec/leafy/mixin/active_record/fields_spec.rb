@@ -1,5 +1,4 @@
 require "spec_helper"
-require 'benchmark' if RUBY_VERSION >= "3.3.0"
 require "leafy/mixin/active_record/schema"
 require "leafy/mixin/active_record/fields"
 require "active_record"

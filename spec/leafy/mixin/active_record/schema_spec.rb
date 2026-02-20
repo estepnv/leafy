@@ -1,5 +1,4 @@
 require "spec_helper"
-require 'benchmark' if RUBY_VERSION >= "3.3.0"
 require "active_record"
 
 RSpec.describe "ActiveRecord mixin" do

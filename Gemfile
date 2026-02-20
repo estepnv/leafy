@@ -14,6 +14,7 @@ end
 if RUBY_VERSION >= "3.0.0"
   gem 'mutex_m'
   gem 'base64'
+  gem 'benchmark'  # Needed by ActiveSupport in Ruby 3.3+/4.x
 end
 
 # Ruby 3.1+ additional bundled gems

@@ -25,7 +25,7 @@ RSpec.describe Leafy::Mixin::Poro::Fields do
   end
 
   after do
-    Object.send(:remove_const, "FieldsHost")
+    Object.send(:remove_const, "FieldsHost") if Object.const_defined?("FieldsHost")
   end
 
   let(:instance) { FieldsHost.new }
