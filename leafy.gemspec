@@ -34,18 +34,28 @@ Gem::Specification.new do |spec|
 
   # ActiveRecord version based on Ruby version
   if RUBY_VERSION >= "2.7.0"
-    spec.add_development_dependency "activerecord", "~> 6.1"
+    spec.add_development_dependency "activerecord", "~> 6.1.0"
   elsif RUBY_VERSION >= "2.5.0"
-    spec.add_development_dependency "activerecord", "~> 6.0"
+    spec.add_development_dependency "activerecord", "~> 6.0.0"
   else
-    spec.add_development_dependency "activerecord", "~> 5.2"
+    spec.add_development_dependency "activerecord", "~> 5.2.0"
   end
 
   if RUBY_ENGINE == "jruby"
     spec.add_development_dependency "activerecord-jdbcsqlite3-adapter", "51"
     spec.add_development_dependency "pg_jruby"
   else
-    spec.add_development_dependency "sqlite3", "~> 1.4"
-    spec.add_development_dependency "pg", "< 2.0"
+    # sqlite3 version based on Ruby version (1.4+ requires Ruby 2.5+)
+    if RUBY_VERSION >= "2.5.0"
+      spec.add_development_dependency "sqlite3", "~> 1.4"
+    else
+      spec.add_development_dependency "sqlite3", "~> 1.3.0"
+    end
+    # pg version constraint for older Ruby versions
+    if RUBY_VERSION >= "2.5.0"
+      spec.add_development_dependency "pg", "< 2.0"
+    else
+      spec.add_development_dependency "pg", "~> 1.0"
+    end
   end
 end

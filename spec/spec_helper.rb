@@ -1,13 +1,23 @@
 # frozen_string_literal: true
 
-# Ruby 3.4+ compatibility: require bundled gems that are needed by dependencies
-if RUBY_VERSION >= "3.4.0"
+# Ruby 2.5+ compatibility: logger needed by ActiveRecord 6.0+
+if RUBY_VERSION >= "2.5.0"
   require 'logger'
-  require 'erb'
+end
+
+# Ruby 3.0+ compatibility: require bundled gems that are needed by dependencies
+if RUBY_VERSION >= "3.0.0"
   require 'mutex_m'
   require 'base64'
-  require 'bigdecimal'
+end
+
+if RUBY_VERSION >= "3.1.0"
   require 'csv'
+end
+
+if RUBY_VERSION >= "3.4.0"
+  require 'erb'
+  require 'bigdecimal'
   require 'drb'
 end
 
